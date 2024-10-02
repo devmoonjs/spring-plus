@@ -1,0 +1,8 @@
+package org.example.expert.domain.todo.dto.request;
+
+import lombok.Getter;
+
+@Getter
+public class TodoListRequest {
+    String weather;
+}
