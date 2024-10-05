@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.entity.Timestamped;
 import org.example.expert.domain.user.enums.UserRole;
+import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 @Entity
@@ -15,7 +16,8 @@ import org.example.expert.domain.user.enums.UserRole;
 @Table(name = "users")
 public class User extends Timestamped {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -43,7 +45,10 @@ public class User extends Timestamped {
     }
 
     public static User fromAuthUser(AuthUser authUser) {
-        return new User(authUser.getId(), authUser.getEmail(), authUser.getUserRole(), authUser.getNickName());
+        return new User(authUser.getId(), authUser.getEmail(),
+                UserRole.of(authUser.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority).findFirst().orElseThrow()),
+                authUser.getNickName());
     }
 
     public void changePassword(String password) {
