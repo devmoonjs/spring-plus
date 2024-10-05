@@ -9,10 +9,14 @@ import org.example.expert.domain.manager.entity.Manager;
 import org.example.expert.domain.manager.repository.ManagerRepository;
 import org.example.expert.domain.todo.dto.request.TodoListRequest;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
+import org.example.expert.domain.todo.dto.request.TodoSearchRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
+import org.example.expert.domain.todo.dto.response.TodoSearchResponse;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
+import org.example.expert.domain.todo.repository.TodoSearchRepository;
+import org.example.expert.domain.todo.repository.TodoSearchRepositoryImpl;
 import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -36,6 +40,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final WeatherClient weatherClient;
     private final ManagerRepository managerRepository;
+    private final TodoSearchRepositoryImpl todoSearchRepositoryImpl;
 
     @Transactional
     public TodoSaveResponse saveTodo(AuthUser authUser, TodoSaveRequest todoSaveRequest) {
@@ -66,8 +71,8 @@ public class TodoService {
 
         String weather = request.getWeather();
 
-        LocalDateTime searchStartDate = LocalDateTime.of(searchStart, LocalTime.MIDNIGHT);
-        LocalDateTime searchEndDate = LocalDateTime.of(searchEnd, LocalTime.MIDNIGHT);
+        LocalDateTime searchStartDate = searchStart.atStartOfDay();
+        LocalDateTime searchEndDate = searchEnd.atStartOfDay();
 
         System.out.println(searchStartDate);
         System.out.println(searchEndDate);
@@ -106,5 +111,10 @@ public class TodoService {
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );
+    }
+
+    public Page<TodoSearchResponse> searchTodos(int page, int size, TodoSearchRequest request) {
+        Pageable pageable = PageRequest.of(page, size);
+        return todoSearchRepositoryImpl.searchTodos(pageable, request);
     }
 }

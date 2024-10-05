@@ -6,8 +6,10 @@ import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.todo.dto.request.TodoListRequest;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
+import org.example.expert.domain.todo.dto.request.TodoSearchRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
+import org.example.expert.domain.todo.dto.response.TodoSearchResponse;
 import org.example.expert.domain.todo.service.TodoService;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,7 +36,7 @@ public class TodoController {
 
     @PostMapping("/todoList")
     public ResponseEntity<Page<TodoResponse>> getTodos(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestBody(required = false) TodoListRequest request,
             @RequestParam(value = "searchStart", required = false, defaultValue = "19990101") @DateTimeFormat(pattern="yyyyMMdd") LocalDate searchStart,
@@ -43,8 +45,19 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getTodos(page, size, request, searchStart, searchEnd));
     }
 
+    @PostMapping("/todos/search")
+    public ResponseEntity<Page<TodoSearchResponse>> searchTodos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestBody TodoSearchRequest request
+            ) {
+        return ResponseEntity.ok(todoService.searchTodos(page, size, request));
+    }
+
     @GetMapping("/todos/{todoId}")
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
         return ResponseEntity.ok(todoService.getTodo(todoId));
     }
+
+
 }
