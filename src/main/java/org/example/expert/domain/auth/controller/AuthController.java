@@ -19,7 +19,7 @@ public class AuthController {
     @PostMapping("/auth/signup")
     public SignupResponse signup(
             @Valid @RequestPart("request") SignupRequest signupRequest,
-            @RequestParam("image") MultipartFile image) {
+            @RequestPart("image") MultipartFile image) {
 
         return authService.signup(signupRequest, image);
     }
