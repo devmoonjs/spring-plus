@@ -36,7 +36,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           REGION="ap-northeast-2"
-          ECR_REPOSITORY="your-ecr-repository-name"
+          ECR_REPOSITORY="spring-plus"
           IMAGE_TAG="latest"
           
           # ECR 로그인 후 도커 이미지 빌드 및 ECR 푸시
@@ -59,7 +59,7 @@ jobs:
           port: 22
           script: |
             REGION="ap-northeast-2"
-            ECR_REPOSITORY="your-ecr-repository-name"
+            ECR_REPOSITORY="spring-plus"
             IMAGE_TAG="latest"
             AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
             
