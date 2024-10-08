@@ -30,11 +30,14 @@ public class User extends Timestamped {
 
     private String nickname;
 
-    public User(String email, String password, UserRole userRole, String nickname) {
+    private String imgUrl;
+
+    public User(String email, String password, UserRole userRole, String nickname, String imgUrl) {
         this.email = email;
         this.password = password;
         this.userRole = userRole;
         this.nickname = nickname;
+        this.imgUrl = imgUrl;
     }
 
     private User(Long id, String email, UserRole userRole, String nickname) {
