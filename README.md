@@ -1,3 +1,6 @@
+## Project Architecture
+<img src="./image/srping-plus_drawio.png">
+
 ## Optimizing Large-Scale Data Retrieval with Caching
 
 - 1,000,000건의 데이터에서 조회 성능을 향상시키기 위해 캐싱 도입
