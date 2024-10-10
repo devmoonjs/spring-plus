@@ -1,5 +1,5 @@
 ## Project Architecture
-<img src="./image/srping-plus_drawio.png">
+<img src="./image/spring_plus.png" width = 120%>
 
 ## Optimizing Large-Scale Data Retrieval with Caching
 
