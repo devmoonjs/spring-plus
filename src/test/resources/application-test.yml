@@ -1,9 +1,8 @@
 spring:
   datasource:
-#    url: ${DB_URL}
     url: jdbc:mysql://localhost:3306/spring_plus_test_db
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: root
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -15,14 +14,19 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
+
+jwt:
+  secret:
+    key:
+
 ---
 cloud:
   aws:
     s3:
       bucket: spring-plus123
     credentials:
-      access-key: ${S3_ACCESS_KEY}
-      secret-key: ${S3_SECRET_KEY}
+      access-key:
+      secret-key:
     region:
       static: ap-northeast-2
       auto: false

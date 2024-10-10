@@ -40,12 +40,23 @@ public class User extends Timestamped {
         this.imgUrl = imgUrl;
     }
 
-    private User(Long id, String email, UserRole userRole, String nickname) {
+    public User(Long id, String email, UserRole userRole, String nickname) {
         this.id = id;
         this.email = email;
         this.userRole = userRole;
         this.nickname = nickname;
     }
+
+    public User(Long id, String email, String password, UserRole userRole, String nickname, String imgUrl) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+        this.nickname = nickname;
+        this.imgUrl = imgUrl;
+    }
+
+
 
     public static User fromAuthUser(AuthUser authUser) {
         return new User(authUser.getId(), authUser.getEmail(),
