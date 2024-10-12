@@ -34,20 +34,20 @@ public class TodoController {
         return ResponseEntity.ok(todoService.saveTodo(authUser, todoSaveRequest));
     }
 
-    @PostMapping("/todoList")
+    @GetMapping("/todoList")
     public ResponseEntity<Page<TodoResponse>> getTodos(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestBody(required = false) TodoListRequest request,
-            @RequestParam(value = "searchStart", required = false, defaultValue = "19990101") @DateTimeFormat(pattern="yyyyMMdd") LocalDate searchStart,
-            @RequestParam(value = "searchEnd", required = false, defaultValue = "99991231") @DateTimeFormat(pattern="yyyyMMdd") LocalDate searchEnd
+            @RequestParam(required = false) String weather,
+            @RequestParam(required = false) LocalDate searchStartAt,
+            @RequestParam(required = false) LocalDate searchEndAt
     ) {
-        return ResponseEntity.ok(todoService.getTodos(page, size, request, searchStart, searchEnd));
+        return ResponseEntity.ok(todoService.getTodos(page, size, weather, searchStartAt, searchEndAt));
     }
 
     @PostMapping("/todos/search")
     public ResponseEntity<Page<TodoSearchResponse>> searchTodos(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestBody TodoSearchRequest request
             ) {

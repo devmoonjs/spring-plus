@@ -23,12 +23,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Slf4j(topic = "todoService")
@@ -66,25 +69,13 @@ public class TodoService {
         );
     }
 
-    public Page<TodoResponse> getTodos(int page, int size, TodoListRequest request, LocalDate searchStart, LocalDate searchEnd) {
+    public Page<TodoResponse> getTodos(int page, int size, String weather, LocalDate searchStartAt, LocalDate searchEndAt) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        String weather = request.getWeather();
+        LocalDateTime searchStartDate = searchStartAt.atTime(LocalTime.MIN);
+        LocalDateTime searchEndDate = searchEndAt.atTime(LocalTime.MAX);
 
-        LocalDateTime searchStartDate = searchStart.atStartOfDay();
-        LocalDateTime searchEndDate = searchEnd.atStartOfDay();
-
-        System.out.println(searchStartDate);
-        System.out.println(searchEndDate);
-        System.out.println(weather);
-
-        Page<Todo> todos;
-
-        if (weather.equals("null")) {
-            todos = todoRepository.findAllTodo(pageable, searchStartDate, searchEndDate);
-        } else {
-            todos = todoRepository.findAllTodo(pageable, weather, searchStartDate, searchEndDate);
-        }
+        Page<Todo> todos = todoRepository.searchTodos(pageable, weather, searchStartDate, searchEndDate);
 
         return todos.map(todo -> new TodoResponse(
                 todo.getId(),

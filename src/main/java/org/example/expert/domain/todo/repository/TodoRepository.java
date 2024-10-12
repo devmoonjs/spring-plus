@@ -26,4 +26,15 @@ public interface TodoRepository extends JpaRepository<Todo, Long>, TodoSearchRep
 
     @Query("SELECT t FROM Todo t WHERE t.weather = :weather AND t.createdAt BETWEEN :searchStart AND :searchEnd")
     Page<Todo> findAllTodo(Pageable pageable, String weather, LocalDateTime searchStart, LocalDateTime searchEnd);
+
+    @Query("""
+            SELECT t FROM Todo t
+            LEFT JOIN FETCH t.user u
+            WHERE (:weather IS NULL OR t.weather = :weather)
+            AND (:searchStartDate IS NULL OR t.modifiedAt >= :searchStartDate)
+            AND (:searchEndDate IS NULL OR t.modifiedAt <= :searchEndDate)
+            ORDER BY t.modifiedAt DESC
+            """
+    )
+    Page<Todo> searchTodos(Pageable pageable, String weather, LocalDateTime searchStartDate, LocalDateTime searchEndDate);
 }
